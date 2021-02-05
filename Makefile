@@ -7,7 +7,7 @@ CC=gcc
 CC_FLAGS= -g -o0 -Wall
 DEPS = debug.h
 
-all:
+all: debug.c
 	$(CC) $(CC_FLAGS) -o debug debug.c
 
 clean:

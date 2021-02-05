@@ -30,10 +30,6 @@ int main() {
     defensiveProgramming();
     recursive(root);
 
-    // Let's see what happens when we access freed memory
-    free(root);
-    recursive(root);
-
     // A recursive function that segfaults
     recursive_segfault(root);
 
@@ -43,8 +39,7 @@ int main() {
 /* Demonstrate how to step through code. Show difference
    between step and continue. Also demonstrate print, 
    display, undisplay, and set. */
-int function1()
-{
+int function1() {
     // Will break at beginning of function
     // Step through until loop
     int x = 0;
@@ -60,12 +55,13 @@ int function1()
     // Run 'display x'
     // Run 'info display' to see all displays
     // Run 'undisplay 1' to stop displaying x
-    for ( ; x<10; x++)
-    {
-        if (x % 2 == 0)
+    for ( ; x<10; x++) {
+        if (x % 2 == 0) {
             y++;
-        else
+        }
+        else {
             x++;
+        }
     }
 
     // Just keep stepping through
@@ -73,45 +69,40 @@ int function1()
     // Stuck in a really long loop?
     // Run 'watchpoint y == 5000'
     // Run 'finish'
-    while (y < 1000000)
+    while (y < 10000) {
         y++;
-
+    }
     x = y;
-
     return 24;
 }
 
 /* Demonstrates how to look at memory and 
    pointers. It also demonstrates how to look
    at the stack and backtrace. */
-struct node *recursive(struct node *next_node)
-{
+struct node *recursive(struct node *next_node) {
     // Run 'print next_node'
     // Run 'print *next_node'
     // Run 'print *next_node->next'
     // Run 'bt' and 'info stack' and 'info frame'
-    if (next_node == NULL)
+    if (next_node == NULL) {
         return NULL;
         // A note: you would NOT want to use an assert statement here, as next_node == NULL is a
         // base case. Asserts will stop execution, while this behaves appropriately for recursion.
-    else
-    {
+    } else {
         int useless = next_node->a + next_node->b;
         return recursive(next_node->next);
     }
 }
 
 /* This will demonstrate how to debug a segfault */
-struct node *recursive_segfault(struct node *next_node)
-{
+struct node *recursive_segfault(struct node *next_node) {
     // There are no base cases or checks for NULL
     // Always check your pointers!
     int useless = next_node->a + next_node->b;
     return recursive_segfault(next_node->next);
 }
 
-void defensiveProgramming()
-{
+void defensiveProgramming() {
     // Two string on the stack
     // They will be layed out in memory one after the other
     char string[8];
@@ -129,7 +120,7 @@ void defensiveProgramming()
     printf("string2 = %s\n", string2);
 
     strcpy(string, first_string);
-    printf("string = %s\n\n", string2);
+    printf("string = %s\n\n", string);
 
     // assert statements are a good way to check preconditions and postconditions, and are a good
     // defensive programming technique.
@@ -145,10 +136,10 @@ void defensiveProgramming()
     printf("string2 = %s\n", string2);
 
     strncpy(string, first_string, 8);
-    printf("string = %s\n\n", string2);
+    printf("string = %s\n\n", string);
 
     // But how does the computer know when a string ends?
-    char *new_string1 = "12345678";
+    char *new_string1 = "87654321";
     strncpy(string, new_string1, 8);
 
     printf("string1 = %s\n", string);
@@ -159,11 +150,9 @@ void defensiveProgramming()
 }
 
 /* Creates a linked list */
-void create_dummy_list(struct node *root)
-{
+void create_dummy_list(struct node *root) {
     struct node *temp = root;
-    for (int i = 0; i < 10; i++)
-    {
+    for (int i = 0; i < 3; i++) {
         temp->a = i;
         temp->b = i * 2;
         temp->next = calloc(1, sizeof(struct node));
